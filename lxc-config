@@ -1,0 +1,110 @@
+lxc.rootfs = /var/lib/lxc/openstack-controller/rootfs
+
+# Taken from the oracle.common.conf.in
+# Console settings
+
+lxc.devttydir = lxc
+lxc.tty = 4
+lxc.pts = 1024
+
+# Mount entries
+# lxc.mount.auto = proc:mixed sys:ro
+
+# Ensure hostname is changed on clone
+lxc.hook.clone = /usr/share/lxc/hooks/clonehostname
+
+# Capabilities
+# Uncomment these if you don't run anything that needs the capability, and
+# would like the container to run with less privilege.
+#
+# Dropping sys_admin disables container root from doing a lot of things
+# that could be bad like re-mounting lxc fstab entries rw for example,
+# but also disables some useful things like being able to nfs mount, and
+# things that are already namespaced with ns_capable() kernel checks, like
+# hostname(1).
+# lxc.cap.drop = sys_admin
+# lxc.cap.drop = net_raw          # breaks dhcp/ping
+# lxc.cap.drop = setgid           # breaks login (initgroups/setgroups)
+# lxc.cap.drop = dac_read_search  # breaks login (pam unix_chkpwd)
+# lxc.cap.drop = setuid           # breaks sshd,nfs statd
+# lxc.cap.drop = audit_control    # breaks sshd (set_loginuid failed)
+# lxc.cap.drop = audit_write
+# lxc.cap.drop = setpcap          # big big login delays in Fedora 20 systemd
+#
+lxc.cap.drop = mac_admin mac_override
+# lxc.cap.drop = setfcap
+lxc.cap.drop = sys_module sys_nice sys_pacct
+lxc.cap.drop = sys_rawio sys_time
+
+# Control Group devices: all denied except those whitelisted
+lxc.cgroup.devices.deny = a
+# Allow any mknod (but not reading/writing the node)
+lxc.cgroup.devices.allow = c *:* m
+lxc.cgroup.devices.allow = b *:* m
+## /dev/null
+lxc.cgroup.devices.allow = c 1:3 rwm
+## /dev/zero
+lxc.cgroup.devices.allow = c 1:5 rwm
+## /dev/full
+lxc.cgroup.devices.allow = c 1:7 rwm
+## /dev/tty
+lxc.cgroup.devices.allow = c 5:0 rwm
+## /dev/random
+lxc.cgroup.devices.allow = c 1:8 rwm
+## /dev/urandom
+lxc.cgroup.devices.allow = c 1:9 rwm
+## /dev/tty[1-4] ptys and lxc console
+lxc.cgroup.devices.allow = c 136:* rwm
+## /dev/ptmx pty master
+lxc.cgroup.devices.allow = c 5:2 rwm
+
+# Blacklist some syscalls which are not safe in privileged
+# containers
+lxc.seccomp = /usr/share/lxc/config/common.seccomp
+
+lxc.arch = x86_64
+lxc.utsname = openstack-controller.brad-x.net
+
+# lxc.autodev = 1
+lxc.kmsg = 0 
+
+# /dev/kvm
+lxc.cgroup.devices.allow = c 10:232 rwm
+# /dev/net/tun
+lxc.cgroup.devices.allow = c 10:200 rwm
+# /dev/mem
+lxc.cgroup.devices.allow = c 1:1 rwm
+
+## Public network (NATed to internet)
+lxc.network.type = veth
+lxc.network.flags = up
+lxc.network.hwaddr = fe:ac:51:60:a5:6b
+lxc.network.link = virbr1
+lxc.network.name = eth0
+
+# Private network (isolated)
+lxc.network.type = veth
+lxc.network.flags = up
+lxc.network.hwaddr = fe:94:2b:7b:cc:80
+lxc.network.link = virbr2
+lxc.network.name = eth1
+
+## Filesystem
+lxc.mount.entry = proc proc proc rw,nodev,noexec,nosuid 0 0
+lxc.mount.entry = sysfs sys sysfs rw 0 0
+
+# When using LXC with apparmor, uncomment the next line to run unconfined:
+#lxc.aa_profile = unconfined
+
+# example simple networking setup, uncomment to enable
+#lxc.network.type = veth
+#lxc.network.flags = up
+#lxc.network.link = lxcbr0
+#lxc.network.name = eth0
+# Additional example for veth network type
+#    static MAC address,
+#lxc.network.hwaddr = 00:16:3e:77:52:20
+#    persistent veth device name on host side
+#        Note: This may potentially collide with other containers of same name!
+#lxc.network.veth.pair = v-juno-controller-e0
+
