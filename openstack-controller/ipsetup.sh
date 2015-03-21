@@ -30,3 +30,7 @@ echo "NETMASK=\"$THISHOST_TUNNEL_NETMASK\"" >> /etc/sysconfig/network-scripts/if
 #setup hostname
 echo "$THISHOST_NAME" > /etc/hostname
 echo "$THISHOST_IP    $THISHOST_NAME" >> /etc/hosts
+
+mkdir -pv /etc/openstack-uncharted/
+
+touch /etc/openstack-uncharted/ip-setup-done

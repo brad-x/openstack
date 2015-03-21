@@ -14,3 +14,8 @@ setsebool -P httpd_can_network_connect on
 chown -R apache:apache /usr/share/openstack-dashboard/static
 systemctl enable httpd.service memcached.service
 systemctl start httpd.service memcached.service
+
+mkdir -pv /etc/openstack-uncharted/
+
+touch /etc/openstack-uncharted/horizon-setup-done
+

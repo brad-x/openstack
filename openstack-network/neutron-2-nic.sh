@@ -2,23 +2,6 @@
 
 source ./config
 
-#install ntp
-yum -y install ntp
-systemctl enable ntpd.service
-systemctl start ntpd.service
-
-#openstack repos
-yum -y install yum-plugin-priorities epel-release ethtool
-yum -y install http://rdo.fedorapeople.org/openstack-juno/rdo-release-juno.rpm
-yum -y upgrade
-yum -y install openstack-utils
-
-#loosen things up
-systemctl stop firewalld.service
-systemctl disable firewalld.service
-sed -i 's/enforcing/disabled/g' /etc/selinux/config
-echo 0 > /sys/fs/selinux/enforce
-
 #get primary NIC info
 NIC=eth0
 MY_MAC=$(cat /sys/class/net/$NIC/address)
@@ -30,9 +13,12 @@ echo 'export OS_PASSWORD='"$ADMIN_PWD" >> creds
 echo 'export OS_AUTH_URL=http://'"$CONTROLLER_IP"':35357/v2.0' >> creds
 source ./creds
 
-echo 'net.ipv4.ip_forward=1' >> /etc/sysctl.conf
-echo 'net.ipv4.conf.all.rp_filter=0' >> /etc/sysctl.conf
-echo 'net.ipv4.conf.default.rp_filter=0' >> /etc/sysctl.conf
+echo 'net.ipv4.ip_forward=1' >> /etc/sysctl.d/ip-forward.conf
+echo 'net.ipv4.conf.all.rp_filter=0' >> /etc/sysctl.d/ip-forward.conf
+echo 'net.ipv4.conf.default.rp_filter=0' >> /etc/sysctl.d/ip-forward.conf
+
+echo net.ipv6.conf.default.disable_ipv6=1 > /etc/sysctl.d/disable-ipv6.conf
+
 sysctl -p
 
 #install neutron
@@ -44,14 +30,6 @@ openstack-config --set /etc/neutron/neutron.conf DEFAULT auth_strategy keystone
 openstack-config --set /etc/neutron/neutron.conf DEFAULT core_plugin ml2
 openstack-config --set /etc/neutron/neutron.conf DEFAULT service_plugins router
 openstack-config --set /etc/neutron/neutron.conf DEFAULT allow_overlapping_ips True
-openstack-config --set /etc/neutron/neutron.conf DEFAULT auth_url http://$CONTROLLER_IP:5000/v2.0
-openstack-config --set /etc/neutron/neutron.conf DEFAULT auth_region $REGION
-openstack-config --set /etc/neutron/neutron.conf DEFAULT admin_tenant_name service
-openstack-config --set /etc/neutron/neutron.conf DEFAULT admin_user neutron
-openstack-config --set /etc/neutron/neutron.conf DEFAULT admin_password $SERVICE_PWD
-openstack-config --set /etc/neutron/neutron.conf DEFAULT nova_metadata_ip $CONTROLLER_IP
-openstack-config --set /etc/neutron/neutron.conf DEFAULT metadata_proxy_shared_secret $META_PWD
-
 
 openstack-config --set /etc/neutron/neutron.conf keystone_authtoken auth_uri http://$CONTROLLER_IP:5000/v2.0
 openstack-config --set /etc/neutron/neutron.conf keystone_authtoken identity_uri http://$CONTROLLER_IP:35357
@@ -59,14 +37,25 @@ openstack-config --set /etc/neutron/neutron.conf keystone_authtoken admin_tenant
 openstack-config --set /etc/neutron/neutron.conf keystone_authtoken admin_user neutron
 openstack-config --set /etc/neutron/neutron.conf keystone_authtoken admin_password $SERVICE_PWD
 
-openstack-config --set /etc/neutron/plugins/ml2/ml2_conf.ini ml2 type_drivers flat,vxlan
-openstack-config --set /etc/neutron/plugins/ml2/ml2_conf.ini ml2 tenant_network_types vxlan
+#### GRE ####
+openstack-config --set /etc/neutron/plugins/ml2/ml2_conf.ini ml2 type_drivers flat,gre
+openstack-config --set /etc/neutron/plugins/ml2/ml2_conf.ini ml2 tenant_network_types gre
+####
+#### VXLAN ####
+#openstack-config --set /etc/neutron/plugins/ml2/ml2_conf.ini ml2 type_drivers flat,vxlan
+#openstack-config --set /etc/neutron/plugins/ml2/ml2_conf.ini ml2 tenant_network_types vxlan
+####
 openstack-config --set /etc/neutron/plugins/ml2/ml2_conf.ini ml2 mechanism_drivers openvswitch
 
 openstack-config --set /etc/neutron/plugins/ml2/ml2_conf.ini ml2_type_flat flat_networks external
 
-openstack-config --set /etc/neutron/plugins/ml2/ml2_conf.ini ml2_type_vxlan vni_ranges 1001:2000
-openstack-config --set /etc/neutron/plugins/ml2/ml2_conf.ini ml2_type_vxlan vxlan_group 224.0.0.1
+#### GRE ####
+openstack-config --set /etc/neutron/plugins/ml2/ml2_conf.ini ml2_type_gre tunnel_id_ranges 1001:2000
+####
+#### VXLAN ####
+#openstack-config --set /etc/neutron/plugins/ml2/ml2_conf.ini ml2_type_vxlan vni_ranges 1001:2000
+#openstack-config --set /etc/neutron/plugins/ml2/ml2_conf.ini ml2_type_vxlan vxlan_group 224.0.0.1
+####
 
 openstack-config --set /etc/neutron/plugins/ml2/ml2_conf.ini securitygroup enable_security_group True
 openstack-config --set /etc/neutron/plugins/ml2/ml2_conf.ini securitygroup enable_ipset True
@@ -76,8 +65,12 @@ openstack-config --set /etc/neutron/plugins/ml2/ml2_conf.ini ovs local_ip $THISH
 openstack-config --set /etc/neutron/plugins/ml2/ml2_conf.ini ovs enable_tunneling True
 openstack-config --set /etc/neutron/plugins/ml2/ml2_conf.ini ovs bridge_mappings external:br-ex
 
-openstack-config --set /etc/neutron/plugins/ml2/ml2_conf.ini agent tunnel_types vxlan
-
+#### GRE ####
+openstack-config --set /etc/neutron/plugins/ml2/ml2_conf.ini agent tunnel_types gre
+####
+#### VXLAN ####
+#openstack-config --set /etc/neutron/plugins/ml2/ml2_conf.ini agent tunnel_types vxlan
+####
 openstack-config --set /etc/neutron/l3_agent.ini DEFAULT interface_driver neutron.agent.linux.interface.OVSInterfaceDriver
 openstack-config --set /etc/neutron/l3_agent.ini DEFAULT use_namespaces True
 openstack-config --set /etc/neutron/l3_agent.ini DEFAULT external_network_bridge br-ex

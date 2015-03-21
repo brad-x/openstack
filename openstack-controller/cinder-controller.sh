@@ -50,3 +50,8 @@ openstack-config --set /etc/cinder/cinder.conf keystone_authtoken admin_password
 su -s /bin/sh -c "cinder-manage db sync" cinder
 systemctl enable openstack-cinder-api.service openstack-cinder-scheduler.service
 systemctl start openstack-cinder-api.service openstack-cinder-scheduler.service
+
+mkdir -pv /etc/openstack-uncharted/
+
+touch /etc/openstack-uncharted/cinder-setup-done
+

@@ -5,17 +5,17 @@ neutron net-create ext-net --shared --router:external True \
 --provider:physical_network external --provider:network_type flat
 
 neutron subnet-create ext-net --name ext-subnet \
---allocation-pool start=192.168.100.200,end=192.168.100.220 \
---disable-dhcp --gateway 192.168.100.1 192.168.100.0/24
+--allocation-pool start=10.64.4.0,end=10.64.5.255 \
+--disable-dhcp --gateway 10.64.0.1 10.64.0.0/16
 
-neutron net-create demo-net
+neutron net-create internal-net
 
-neutron subnet-create demo-net --name demo-subnet \
---dns-nameserver 192.168.0.5 \
---gateway 10.0.1.1 10.0.1.0/24
+neutron subnet-create internal-net --name internal-subnet \
+--dns-nameserver 10.64.0.1 \
+--gateway 10.1.0.1 10.1.0.0/16
 
-neutron router-create demo-router
+neutron router-create internal-router
 
-neutron router-interface-add demo-router demo-subnet
+neutron router-interface-add internal-router internal-subnet
 
-neutron router-gateway-set demo-router ext-net
+neutron router-gateway-set internal-router ext-net

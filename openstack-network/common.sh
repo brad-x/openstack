@@ -11,7 +11,7 @@ systemctl enable crond.service
 systemctl start crond.service 
 
 # Set up OpenStack repos
-yum -y install yum-plugin-priorities epel-release
+yum -y install yum-plugin-priorities epel-release ethtool
 yum -y install http://rdo.fedorapeople.org/openstack-juno/rdo-release-juno.rpm
 yum -y install openstack-utils
 yum -y update

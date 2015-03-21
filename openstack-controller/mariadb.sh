@@ -28,3 +28,7 @@ mysql -u root -e "DELETE FROM mysql.user WHERE User='';"
 mysql -u root -e "UPDATE mysql.user SET Password=PASSWORD('${SQL_PWD}') WHERE User='root';"
 mysql -u root -e "FLUSH PRIVILEGES;"
 
+mkdir -pv /etc/openstack-uncharted/
+
+touch /etc/openstack-uncharted/mariadb-setup-done
+

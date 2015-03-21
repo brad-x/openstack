@@ -14,7 +14,9 @@ mysql -u root -p${SQL_PWD} -e "FLUSH PRIVILEGES;"
 
 # Set up /etc/keystone.conf
 openstack-config --set /etc/keystone/keystone.conf DEFAULT admin_token $ADMIN_TOKEN
+
 openstack-config --set /etc/keystone/keystone.conf database connection mysql://keystone:${SERVICE_PWD}@${CONTROLLER_IP}/keystone
+
 openstack-config --set /etc/keystone/keystone.conf token provider keystone.token.providers.uuid.Provider
 openstack-config --set /etc/keystone/keystone.conf token driver keystone.token.persistence.backends.sql.Token
 
@@ -62,3 +64,8 @@ echo "export OS_TENANT_NAME=admin" > creds
 echo "export OS_USERNAME=admin" >> creds
 echo "export OS_PASSWORD=$ADMIN_PWD" >> creds
 echo "export OS_AUTH_URL=http://$CONTROLLER_IP:35357/v2.0" >> creds
+
+mkdir -pv /etc/openstack-uncharted/
+
+touch /etc/openstack-uncharted/keystone-setup-done
+
