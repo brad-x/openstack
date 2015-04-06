@@ -1,0 +1,14 @@
+#!/bin/bash
+
+for container in controller network compute
+do
+        lxc-create -t centos -n openstack-${container} -- -R 7
+        cp ${container}-config /var/lib/lxc/openstack-${container}/config
+        cp -av openstack-${container} /var/lib/lxc/openstack-${container}/rootfs/root/
+        systemctl start lxc@openstack-${container}
+done
+
+# Controller setup
+
+# TBD
+

@@ -31,6 +31,8 @@ echo "NETMASK=\"$THISHOST_TUNNEL_NETMASK\"" >> /etc/sysconfig/network-scripts/if
 echo "$THISHOST_NAME" > /etc/hostname
 echo "$THISHOST_IP    $THISHOST_NAME" >> /etc/hosts
 
+/usr/bin/systemctl restart network
+
 mkdir -pv /etc/openstack-uncharted/
 
 touch /etc/openstack-uncharted/ip-setup-done

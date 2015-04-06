@@ -13,6 +13,8 @@ innodb_file_per_table\n\
 collation-server = utf8_general_ci\n\
 init-connect = 'SET NAMES utf8'\n\
 character-set-server = utf8\n\
+open_files_limit = 8192\n\
+max_connections = 8192\n\
 " /etc/my.cnf
 
 #start database server

@@ -39,6 +39,8 @@ openstack-config --set /etc/cinder/cinder.conf DEFAULT rpc_backend rabbit
 openstack-config --set /etc/cinder/cinder.conf DEFAULT rabbit_host $CONTROLLER_IP
 openstack-config --set /etc/cinder/cinder.conf DEFAULT auth_strategy keystone
 openstack-config --set /etc/cinder/cinder.conf DEFAULT my_ip $CONTROLLER_IP
+openstack-config --set /etc/cinder/cinder.conf DEFAULT glance_api_version 2
+openstack-config --set /etc/cinder/cinder.conf DEFAULT glance_host ${CONTROLLER_IP}
 
 openstack-config --set /etc/cinder/cinder.conf keystone_authtoken auth_uri http://$CONTROLLER_IP:5000/v2.0
 openstack-config --set /etc/cinder/cinder.conf keystone_authtoken identity_uri http://$CONTROLLER_IP:35357

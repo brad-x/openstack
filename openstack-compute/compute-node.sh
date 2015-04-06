@@ -55,15 +55,15 @@ openstack-config --set /etc/neutron/neutron.conf keystone_authtoken admin_tenant
 openstack-config --set /etc/neutron/neutron.conf keystone_authtoken admin_user neutron
 openstack-config --set /etc/neutron/neutron.conf keystone_authtoken admin_password $SERVICE_PWD
 
-openstack-config --set /etc/neutron/plugins/ml2/ml2_conf.ini ml2 type_drivers flat,gre
-openstack-config --set /etc/neutron/plugins/ml2/ml2_conf.ini ml2 tenant_network_types gre
-#openstack-config --set /etc/neutron/plugins/ml2/ml2_conf.ini ml2 type_drivers flat,vxlan
-#openstack-config --set /etc/neutron/plugins/ml2/ml2_conf.ini ml2 tenant_network_types vxlan
+#openstack-config --set /etc/neutron/plugins/ml2/ml2_conf.ini ml2 type_drivers flat,gre
+#openstack-config --set /etc/neutron/plugins/ml2/ml2_conf.ini ml2 tenant_network_types gre
+openstack-config --set /etc/neutron/plugins/ml2/ml2_conf.ini ml2 type_drivers flat,vxlan
+openstack-config --set /etc/neutron/plugins/ml2/ml2_conf.ini ml2 tenant_network_types vxlan
 openstack-config --set /etc/neutron/plugins/ml2/ml2_conf.ini ml2 mechanism_drivers openvswitch
 
-openstack-config --set /etc/neutron/plugins/ml2/ml2_conf.ini ml2_type_gre tunnel_id_ranges 1001:2000
-#openstack-config --set /etc/neutron/plugins/ml2/ml2_conf.ini ml2_type_vxlan vni_ranges 1001:2000
-#openstack-config --set /etc/neutron/plugins/ml2/ml2_conf.ini ml2_type_vxlan vxlan_group 224.0.0.1
+#openstack-config --set /etc/neutron/plugins/ml2/ml2_conf.ini ml2_type_gre tunnel_id_ranges 1001:2000
+openstack-config --set /etc/neutron/plugins/ml2/ml2_conf.ini ml2_type_vxlan vni_ranges 1001:2000
+openstack-config --set /etc/neutron/plugins/ml2/ml2_conf.ini ml2_type_vxlan vxlan_group 224.0.0.1
 
 openstack-config --set /etc/neutron/plugins/ml2/ml2_conf.ini securitygroup enable_security_group True
 openstack-config --set /etc/neutron/plugins/ml2/ml2_conf.ini securitygroup enable_ipset True
@@ -72,8 +72,8 @@ openstack-config --set /etc/neutron/plugins/ml2/ml2_conf.ini securitygroup firew
 openstack-config --set /etc/neutron/plugins/ml2/ml2_conf.ini ovs local_ip $THISHOST_TUNNEL_IP
 openstack-config --set /etc/neutron/plugins/ml2/ml2_conf.ini ovs enable_tunneling True
 
-openstack-config --set /etc/neutron/plugins/ml2/ml2_conf.ini agent tunnel_types gre
-#openstack-config --set /etc/neutron/plugins/ml2/ml2_conf.ini agent tunnel_types vxlan
+#openstack-config --set /etc/neutron/plugins/ml2/ml2_conf.ini agent tunnel_types gre
+openstack-config --set /etc/neutron/plugins/ml2/ml2_conf.ini agent tunnel_types vxlan
 
 systemctl enable openvswitch.service
 systemctl start openvswitch.service
@@ -115,6 +115,8 @@ openstack-config --set /etc/cinder/cinder.conf DEFAULT my_ip $THISHOST_IP
 #openstack-config --set /etc/cinder/cinder.conf DEFAULT iscsi_helper lioadm
 openstack-config --set /etc/cinder/cinder.conf DEFAULT volume_driver cinder.volume.drivers.nfs.NfsDriver
 openstack-config --set /etc/cinder/cinder.conf DEFAULT nfs_shares_config /etc/cinder/nfsshares
+openstack-config --set /etc/cinder/cinder.conf DEFAULT glance_api_version 2
+openstack-config --set /etc/cinder/cinder.conf DEFAULT glance_host ${CONTROLLER_IP}
 
 openstack-config --set /etc/cinder/cinder.conf keystone_authtoken auth_uri http://$CONTROLLER_IP:5000/v2.0
 openstack-config --set /etc/cinder/cinder.conf keystone_authtoken identity_uri http://$CONTROLLER_IP:35357

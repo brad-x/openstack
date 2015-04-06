@@ -33,7 +33,8 @@ lxc.hook.clone = /usr/share/lxc/hooks/clonehostname
 #
 lxc.cap.drop = mac_admin mac_override
 # lxc.cap.drop = setfcap
-lxc.cap.drop = sys_module sys_nice sys_pacct
+lxc.cap.drop = sys_module 
+# sys_nice sys_pacct
 lxc.cap.drop = sys_rawio sys_time
 
 # Control Group devices: all denied except those whitelisted
@@ -63,7 +64,7 @@ lxc.cgroup.devices.allow = c 5:2 rwm
 lxc.seccomp = /usr/share/lxc/config/common.seccomp
 
 lxc.arch = x86_64
-lxc.utsname = openstack-controller.brad-x.net
+lxc.utsname = openstack-controller.uncharted.software
 
 # lxc.autodev = 1
 lxc.kmsg = 0 
@@ -78,16 +79,17 @@ lxc.cgroup.devices.allow = c 1:1 rwm
 ## Public network (NATed to internet)
 lxc.network.type = veth
 lxc.network.flags = up
-lxc.network.hwaddr = fe:ac:51:60:a5:6b
-lxc.network.link = virbr1
+lxc.network.hwaddr = fe:e5:35:5a:fe:f6
+lxc.network.link = br0
 lxc.network.name = eth0
 
 # Private network (isolated)
 lxc.network.type = veth
 lxc.network.flags = up
-lxc.network.hwaddr = fe:94:2b:7b:cc:80
-lxc.network.link = virbr2
+lxc.network.hwaddr = fe:0f:ef:7a:7a:35
+lxc.network.link = br1
 lxc.network.name = eth1
+lxc.network.mtu = 9000
 
 ## Filesystem
 lxc.mount.entry = proc proc proc rw,nodev,noexec,nosuid 0 0

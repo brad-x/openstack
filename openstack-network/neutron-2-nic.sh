@@ -22,7 +22,7 @@ echo net.ipv6.conf.default.disable_ipv6=1 > /etc/sysctl.d/disable-ipv6.conf
 sysctl -p
 
 #install neutron
-yum -y install openstack-neutron openstack-neutron-ml2 openstack-neutron-openvswitch
+yum -y install openstack-neutron openstack-neutron-ml2 openstack-neutron-openvswitch which
 
 openstack-config --set /etc/neutron/neutron.conf DEFAULT rpc_backend rabbit
 openstack-config --set /etc/neutron/neutron.conf DEFAULT rabbit_host $CONTROLLER_IP
@@ -38,23 +38,23 @@ openstack-config --set /etc/neutron/neutron.conf keystone_authtoken admin_user n
 openstack-config --set /etc/neutron/neutron.conf keystone_authtoken admin_password $SERVICE_PWD
 
 #### GRE ####
-openstack-config --set /etc/neutron/plugins/ml2/ml2_conf.ini ml2 type_drivers flat,gre
-openstack-config --set /etc/neutron/plugins/ml2/ml2_conf.ini ml2 tenant_network_types gre
+#openstack-config --set /etc/neutron/plugins/ml2/ml2_conf.ini ml2 type_drivers flat,gre
+#openstack-config --set /etc/neutron/plugins/ml2/ml2_conf.ini ml2 tenant_network_types gre
 ####
 #### VXLAN ####
-#openstack-config --set /etc/neutron/plugins/ml2/ml2_conf.ini ml2 type_drivers flat,vxlan
-#openstack-config --set /etc/neutron/plugins/ml2/ml2_conf.ini ml2 tenant_network_types vxlan
+openstack-config --set /etc/neutron/plugins/ml2/ml2_conf.ini ml2 type_drivers flat,vxlan
+openstack-config --set /etc/neutron/plugins/ml2/ml2_conf.ini ml2 tenant_network_types vxlan
 ####
 openstack-config --set /etc/neutron/plugins/ml2/ml2_conf.ini ml2 mechanism_drivers openvswitch
 
 openstack-config --set /etc/neutron/plugins/ml2/ml2_conf.ini ml2_type_flat flat_networks external
 
 #### GRE ####
-openstack-config --set /etc/neutron/plugins/ml2/ml2_conf.ini ml2_type_gre tunnel_id_ranges 1001:2000
+#openstack-config --set /etc/neutron/plugins/ml2/ml2_conf.ini ml2_type_gre tunnel_id_ranges 1001:2000
 ####
 #### VXLAN ####
-#openstack-config --set /etc/neutron/plugins/ml2/ml2_conf.ini ml2_type_vxlan vni_ranges 1001:2000
-#openstack-config --set /etc/neutron/plugins/ml2/ml2_conf.ini ml2_type_vxlan vxlan_group 224.0.0.1
+openstack-config --set /etc/neutron/plugins/ml2/ml2_conf.ini ml2_type_vxlan vni_ranges 1001:2000
+openstack-config --set /etc/neutron/plugins/ml2/ml2_conf.ini ml2_type_vxlan vxlan_group 224.0.0.1
 ####
 
 openstack-config --set /etc/neutron/plugins/ml2/ml2_conf.ini securitygroup enable_security_group True
@@ -66,10 +66,10 @@ openstack-config --set /etc/neutron/plugins/ml2/ml2_conf.ini ovs enable_tunnelin
 openstack-config --set /etc/neutron/plugins/ml2/ml2_conf.ini ovs bridge_mappings external:br-ex
 
 #### GRE ####
-openstack-config --set /etc/neutron/plugins/ml2/ml2_conf.ini agent tunnel_types gre
+#openstack-config --set /etc/neutron/plugins/ml2/ml2_conf.ini agent tunnel_types gre
 ####
 #### VXLAN ####
-#openstack-config --set /etc/neutron/plugins/ml2/ml2_conf.ini agent tunnel_types vxlan
+openstack-config --set /etc/neutron/plugins/ml2/ml2_conf.ini agent tunnel_types vxlan
 ####
 openstack-config --set /etc/neutron/l3_agent.ini DEFAULT interface_driver neutron.agent.linux.interface.OVSInterfaceDriver
 openstack-config --set /etc/neutron/l3_agent.ini DEFAULT use_namespaces True
