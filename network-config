@@ -66,7 +66,8 @@ lxc.seccomp = /usr/share/lxc/config/common.seccomp
 lxc.arch = x86_64
 lxc.utsname = openstack-network.uncharted.software
 
-# lxc.autodev = 1
+lxc.autodev = 1
+lxc.hook.autodev = /var/lib/lxc/openstack-network/network-devices.sh
 lxc.kmsg = 0 
 
 # /dev/kvm

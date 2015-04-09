@@ -32,3 +32,5 @@ echo "$THISHOST_NAME" > /etc/hostname
 echo "$THISHOST_IP    $THISHOST_NAME" >> /etc/hosts
 
 /usr/bin/systemctl restart network
+
+
