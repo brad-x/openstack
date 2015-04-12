@@ -12,6 +12,7 @@ systemctl start crond.service
 
 # Set up OpenStack repos
 yum -y install yum-plugin-priorities epel-release
+yum -y install http://plain.resources.ovirt.org/pub/yum-repo/ovirt-release35.rpm
 yum -y install http://rdo.fedorapeople.org/openstack-juno/rdo-release-juno.rpm
 yum -y install openstack-utils
 yum -y update

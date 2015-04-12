@@ -9,8 +9,3 @@ do
 	cp -av openstack-${container} /var/lib/lxc/openstack-${container}/rootfs/root/
 	systemctl start lxc@openstack-${container}
 done
-
-# Controller setup
-
-# TBD
-

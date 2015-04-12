@@ -42,3 +42,9 @@ sh ./horizon-dashboard.sh
 # Create keystone entries for cinder
 
 sh ./cinder-controller.sh
+
+# Install heat controller
+# Create databases for heat
+# Create keystone entries for heat
+
+sh ./heat-controller.sh

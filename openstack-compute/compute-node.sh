@@ -61,6 +61,8 @@ openstack-config --set /etc/neutron/plugins/ml2/ml2_conf.ini ml2 type_drivers fl
 openstack-config --set /etc/neutron/plugins/ml2/ml2_conf.ini ml2 tenant_network_types vxlan
 openstack-config --set /etc/neutron/plugins/ml2/ml2_conf.ini ml2 mechanism_drivers openvswitch
 
+openstack-config --set /etc/neutron/plugins/ml2/ml2_conf.ini ml2_type_flat flat_networks external
+
 #openstack-config --set /etc/neutron/plugins/ml2/ml2_conf.ini ml2_type_gre tunnel_id_ranges 1001:2000
 openstack-config --set /etc/neutron/plugins/ml2/ml2_conf.ini ml2_type_vxlan vni_ranges 1001:2000
 openstack-config --set /etc/neutron/plugins/ml2/ml2_conf.ini ml2_type_vxlan vxlan_group 224.0.0.1
@@ -71,9 +73,14 @@ openstack-config --set /etc/neutron/plugins/ml2/ml2_conf.ini securitygroup firew
 
 openstack-config --set /etc/neutron/plugins/ml2/ml2_conf.ini ovs local_ip $THISHOST_TUNNEL_IP
 openstack-config --set /etc/neutron/plugins/ml2/ml2_conf.ini ovs enable_tunneling True
+openstack-config --set /etc/neutron/plugins/ml2/ml2_conf.ini ovs bridge_mappings external:br-ex
 
 #openstack-config --set /etc/neutron/plugins/ml2/ml2_conf.ini agent tunnel_types gre
 openstack-config --set /etc/neutron/plugins/ml2/ml2_conf.ini agent tunnel_types vxlan
+
+openstack-config --set /etc/neutron/l3_agent.ini DEFAULT use_namespaces True
+openstack-config --set /etc/neutron/l3_agent.ini DEFAULT external_network_bridge br-ex
+openstack-config --set /etc/neutron/l3_agent.ini DEFAULT interface_driver neutron.agent.linux.interface.OVSInterfaceDriver
 
 systemctl enable openvswitch.service
 systemctl start openvswitch.service
@@ -95,8 +102,8 @@ sed -i 's,plugins/openvswitch/ovs_neutron_plugin.ini,plugin.ini,g' \
 systemctl enable libvirtd.service openstack-nova-compute.service
 systemctl start libvirtd.service
 systemctl start openstack-nova-compute.service
-systemctl enable neutron-openvswitch-agent.service
-systemctl start neutron-openvswitch-agent.service
+systemctl enable neutron-openvswitch-agent.service neutron-l3-agent.service
+systemctl start neutron-openvswitch-agent.service neutron-l3-agent.service
 
 #cinder storage node
 #pvcreate /dev/sdb

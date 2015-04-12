@@ -114,12 +114,12 @@ paste.app_factory = trove.common.api:app_factory
 paste.filter_factory = trove.common.wsgi:Debug
 EOF
 
-openstack-config --set /etc/trove/apt-paste.ini filter:authtoken auth_uri http://$CONTROLLER_IP:5000/v2.0
-openstack-config --set /etc/trove/apt-paste.ini filter:authtoken identity_uri http://$CONTROLLER_IP:35357
-openstack-config --set /etc/trove/apt-paste.ini filter:authtoken admin_user trove
-openstack-config --set /etc/trove/apt-paste.ini filter:authtoken admin_password $SERVICE_PWD
-openstack-config --set /etc/trove/apt-paste.ini filter:authtoken admin_tenant_name service
-openstack-config --set /etc/trove/apt-paste.ini filter:authtoken signing_dir /var/cache/trove
+#openstack-config --set /etc/trove/apt-paste.ini filter:authtoken auth_uri http://$CONTROLLER_IP:5000/v2.0
+#openstack-config --set /etc/trove/apt-paste.ini filter:authtoken identity_uri http://$CONTROLLER_IP:35357
+#openstack-config --set /etc/trove/apt-paste.ini filter:authtoken admin_user trove
+#openstack-config --set /etc/trove/apt-paste.ini filter:authtoken admin_password $SERVICE_PWD
+#openstack-config --set /etc/trove/apt-paste.ini filter:authtoken admin_tenant_name service
+#openstack-config --set /etc/trove/apt-paste.ini filter:authtoken signing_dir /var/cache/trove
 
 # Changes only made to trove.conf #####################################################################################
 

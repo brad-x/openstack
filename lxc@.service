@@ -11,4 +11,3 @@ ExecStop=/usr/bin/lxc-stop -n %i
 
 [Install]
 WantedBy=multi-user.target
-

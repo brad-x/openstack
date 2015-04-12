@@ -6,4 +6,3 @@ chmod 660 kvm
 mkdir net
 mknod net/tun c 10 200
 chmod 666 net/tun
-
