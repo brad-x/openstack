@@ -4,6 +4,7 @@ After=network.target
 
 [Service]
 Type=simple
+Delegate=true
 Restart=always
 ExecStart=/usr/bin/lxc-start -n %i
 ExecReload=/usr/bin/lxc-restart -n %i

@@ -1,11 +1,14 @@
 #!/bin/bash
 
-for container in controller network compute
+cp -v lxc\@.service /etc/systemd/system/
+
+for container in controller compute
 do
 	lxc-create -t centos -n openstack-${container} -- -R 7
 	cp ${container}-config /var/lib/lxc/openstack-${container}/config
 	cp ${container}-devices.sh /var/lib/lxc/openstack-${container}/
 	chmod +x /var/lib/lxc/openstack-${container}/${container}-devices.sh
 	cp -av openstack-${container} /var/lib/lxc/openstack-${container}/rootfs/root/
+	systemctl enable lxc@openstack-${container}
 	systemctl start lxc@openstack-${container}
 done

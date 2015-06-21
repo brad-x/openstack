@@ -64,7 +64,7 @@ lxc.cgroup.devices.allow = c 5:2 rwm
 lxc.seccomp = /usr/share/lxc/config/common.seccomp
 
 lxc.arch = x86_64
-lxc.utsname = openstack-network.uncharted.software
+lxc.utsname = openstack-network-node1
 
 lxc.autodev = 1
 lxc.hook.autodev = /var/lib/lxc/openstack-network/network-devices.sh
