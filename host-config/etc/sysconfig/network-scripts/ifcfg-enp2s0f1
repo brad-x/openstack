@@ -1,0 +1,6 @@
+DEVICE=enp2s0f1
+BOOTPROTO=none
+NM_CONTROLLED=no
+ONBOOT=yes
+TYPE=Ethernet
+BRIDGE=br1

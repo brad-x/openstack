@@ -39,6 +39,8 @@ openstack-config --set /etc/nova/nova.conf DEFAULT network_api_class nova.networ
 openstack-config --set /etc/nova/nova.conf DEFAULT security_group_api neutron
 openstack-config --set /etc/nova/nova.conf DEFAULT linuxnet_interface_driver nova.network.linux_net.LinuxOVSInterfaceDriver
 openstack-config --set /etc/nova/nova.conf DEFAULT firewall_driver nova.virt.firewall.NoopFirewallDriver
+openstack-config --set /etc/nova/nova.conf DEFAULT dhcp_domain ${DHCP_DOMAIN}
+openstack-config --set /etc/nova/nova.conf DEFAULT default_availability_zone \"${DEFAULT_AZ}\"
 
 openstack-config --set /etc/nova/nova.conf keystone_authtoken auth_uri http://$CONTROLLER_IP:5000/v2.0
 openstack-config --set /etc/nova/nova.conf keystone_authtoken identity_uri http://$CONTROLLER_IP:35357

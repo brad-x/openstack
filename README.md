@@ -9,6 +9,8 @@ Requires a config file in each subdirectory of the following form:
 	ADMIN_PWD=password
 	META_PWD=meta123
 	REGION=TorontoOffice
+	DHCP_DOMAIN=openstack-tenant.brad-x.net
+	DEFAULT_AZ="brad-x-east-1a"
 
 	# Host IP info
 	THISHOST_NAME=juno-controller

@@ -73,7 +73,8 @@ openstack-config --set /etc/neutron/plugins/ml2/ml2_conf.ini agent tunnel_types 
 ####
 openstack-config --set /etc/neutron/l3_agent.ini DEFAULT interface_driver neutron.agent.linux.interface.OVSInterfaceDriver
 openstack-config --set /etc/neutron/l3_agent.ini DEFAULT use_namespaces True
-openstack-config --set /etc/neutron/l3_agent.ini DEFAULT external_network_bridge br-ex
+openstack-config --set /etc/neutron/l3_agent.ini DEFAULT external_network_bridge
+openstack-config --set /etc/neutron/l3_agent.ini DEFAULT gateway_external_network_id
 
 openstack-config --set /etc/neutron/dhcp_agent.ini DEFAULT interface_driver neutron.agent.linux.interface.OVSInterfaceDriver
 openstack-config --set /etc/neutron/dhcp_agent.ini DEFAULT dhcp_driver neutron.agent.linux.dhcp.Dnsmasq
