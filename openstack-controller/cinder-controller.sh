@@ -41,12 +41,17 @@ openstack-config --set /etc/cinder/cinder.conf DEFAULT auth_strategy keystone
 openstack-config --set /etc/cinder/cinder.conf DEFAULT my_ip $CONTROLLER_IP
 openstack-config --set /etc/cinder/cinder.conf DEFAULT glance_api_version 2
 openstack-config --set /etc/cinder/cinder.conf DEFAULT glance_host ${CONTROLLER_IP}
+openstack-config --set /etc/cinder/cinder.conf DEFAULT default_availability_zone "\"${DEFAULT_AZ}\""
+openstack-config --set /etc/cinder/cinder.conf DEFAULT storage_availability_zone "\"${DEFAULT_AZ}\""
 
 openstack-config --set /etc/cinder/cinder.conf keystone_authtoken auth_uri http://$CONTROLLER_IP:5000/v2.0
 openstack-config --set /etc/cinder/cinder.conf keystone_authtoken identity_uri http://$CONTROLLER_IP:35357
 openstack-config --set /etc/cinder/cinder.conf keystone_authtoken admin_tenant_name service
 openstack-config --set /etc/cinder/cinder.conf keystone_authtoken admin_user cinder
 openstack-config --set /etc/cinder/cinder.conf keystone_authtoken admin_password $SERVICE_PWD
+
+openstack-config --set /etc/cinder/cinder.conf oslo_messaging_rabbit rabbit_virtual_host "/"
+openstack-config --set /etc/cinder/cinder.conf oslo_messaging_rabbit rabbit_host $CONTROLLER_IP
 
 # Start cinder controller
 su -s /bin/sh -c "cinder-manage db sync" cinder

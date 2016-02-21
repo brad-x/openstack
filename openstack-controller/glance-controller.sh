@@ -36,8 +36,11 @@ openstack-config --set /etc/glance/glance-api.conf keystone_authtoken admin_pass
 
 openstack-config --set /etc/glance/glance-api.conf paste_deploy flavor keystone
 
-openstack-config --set /etc/glance/glance-api.conf glance_store default_store file
-openstack-config --set /etc/glance/glance-api.conf glance_store filesystem_store_datadir /var/lib/glance/images/
+openstack-config --set /etc/glance/glance-api.conf oslo_messaging_rabbit rabbit_virtual_host "/"
+openstack-config --set /etc/glance/glance-api.conf oslo_messaging_rabbit rabbit_host $CONTROLLER_IP
+
+#openstack-config --set /etc/glance/glance-api.conf glance_store default_store file
+#openstack-config --set /etc/glance/glance-api.conf glance_store filesystem_store_datadir /var/lib/glance/images/
 
 # Edit /etc/glance/glance-registry.conf
 

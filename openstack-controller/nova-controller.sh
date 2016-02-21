@@ -40,7 +40,10 @@ openstack-config --set /etc/nova/nova.conf DEFAULT security_group_api neutron
 openstack-config --set /etc/nova/nova.conf DEFAULT linuxnet_interface_driver nova.network.linux_net.LinuxOVSInterfaceDriver
 openstack-config --set /etc/nova/nova.conf DEFAULT firewall_driver nova.virt.firewall.NoopFirewallDriver
 openstack-config --set /etc/nova/nova.conf DEFAULT dhcp_domain ${DHCP_DOMAIN}
-openstack-config --set /etc/nova/nova.conf DEFAULT default_availability_zone \"${DEFAULT_AZ}\"
+openstack-config --set /etc/nova/nova.conf DEFAULT default_availability_zone "\"${DEFAULT_AZ}\""
+
+openstack-config --set /etc/nova/nova.conf DEFAULT scheduler_default_filters 'AggregateInstanceExtraSpecsFilter,AvailabilityZoneFilter,RamFilter,ComputeFilter'
+openstack-config --set /etc/nova/nova.conf DEFAULT allow_same_net_traffic false
 
 openstack-config --set /etc/nova/nova.conf keystone_authtoken auth_uri http://$CONTROLLER_IP:5000/v2.0
 openstack-config --set /etc/nova/nova.conf keystone_authtoken identity_uri http://$CONTROLLER_IP:35357
@@ -58,6 +61,9 @@ openstack-config --set /etc/nova/nova.conf neutron admin_username neutron
 openstack-config --set /etc/nova/nova.conf neutron admin_password $SERVICE_PWD
 openstack-config --set /etc/nova/nova.conf neutron service_metadata_proxy True
 openstack-config --set /etc/nova/nova.conf neutron metadata_proxy_shared_secret $META_PWD
+
+openstack-config --set /etc/nova/api.conf oslo_messaging_rabbit rabbit_virtual_host "/"
+openstack-config --set /etc/nova/api.conf oslo_messaging_rabbit rabbit_host $CONTROLLER_IP
 
 # Start nova
 su -s /bin/sh -c "nova-manage db sync" nova

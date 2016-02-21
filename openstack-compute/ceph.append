@@ -1,0 +1,3 @@
+[client]
+    rbd cache = true
+    rbd cache writethrough until flush = true

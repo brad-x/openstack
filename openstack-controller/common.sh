@@ -12,8 +12,8 @@ systemctl start crond.service
 
 # Set up OpenStack repos
 yum -y install yum-plugin-priorities epel-release
-yum -y install http://rdo.fedorapeople.org/openstack-juno/rdo-release-juno.rpm
-yum -y install openstack-utils
+yum -y install http://rdo.fedorapeople.org/openstack-kilo/rdo-release-kilo.rpm
+yum -y install openstack-utils python-openstackclient 
 yum -y update
 
 # Drop firewall and SELinux for now 
@@ -21,6 +21,9 @@ systemctl stop firewalld.service
 systemctl disable firewalld.service
 sed -i 's/enforcing/disabled/g' /etc/selinux/config
 setenforce 0
+
+mkdir /etc/ceph
+scp root@10.64.2.20:/etc/ceph/* /etc/ceph/
 
 # Disable IPv6 for now 
 echo net.ipv6.conf.default.disable_ipv6=1 > /etc/sysctl.d/disable-ipv6.conf
