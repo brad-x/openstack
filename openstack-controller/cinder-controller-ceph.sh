@@ -22,7 +22,7 @@ openstack-config --set /etc/cinder/cinder.conf DEFAULT backup_ceph_stripe_unit 0
 openstack-config --set /etc/cinder/cinder.conf DEFAULT backup_ceph_stripe_count 0
 openstack-config --set /etc/cinder/cinder.conf DEFAULT restore_discard_excess_bytes true
 
-openstack-config --set /etc/cinder/cinder.conf DEFAULT enabled_backends standard,elasticsearch
+openstack-config --set /etc/cinder/cinder.conf DEFAULT enabled_backends standard,ssd-pool
 openstack-config --set /etc/cinder/cinder.conf DEFAULT scheduler_driver cinder.scheduler.filter_scheduler.FilterScheduler
 openstack-config --set /etc/cinder/cinder.conf DEFAULT default_volume_type standard
 
@@ -34,13 +34,13 @@ openstack-config --set /etc/cinder/cinder.conf standard volume_backend_name stan
 openstack-config --set /etc/cinder/cinder.conf standard volume_driver cinder.volume.drivers.rbd.RBDDriver
 openstack-config --set /etc/cinder/cinder.conf standard rbd_secret_uuid $RBD_SECRET_UUID
 
-openstack-config --set /etc/cinder/cinder.conf elasticsearch volume_group elasticsearch
-openstack-config --set /etc/cinder/cinder.conf elasticsearch host volumes
-openstack-config --set /etc/cinder/cinder.conf elasticsearch rbd_user cinder
-openstack-config --set /etc/cinder/cinder.conf elasticsearch rbd_pool elasticsearch
-openstack-config --set /etc/cinder/cinder.conf elasticsearch volume_backend_name elasticsearch
-openstack-config --set /etc/cinder/cinder.conf elasticsearch volume_driver cinder.volume.drivers.rbd.RBDDriver
-openstack-config --set /etc/cinder/cinder.conf elasticsearch rbd_secret_uuid $RBD_SECRET_UUID
+openstack-config --set /etc/cinder/cinder.conf ssd-pool volume_group ssd-pool
+openstack-config --set /etc/cinder/cinder.conf ssd-pool host volumes
+openstack-config --set /etc/cinder/cinder.conf ssd-pool rbd_user cinder
+openstack-config --set /etc/cinder/cinder.conf ssd-pool rbd_pool ssd-pool
+openstack-config --set /etc/cinder/cinder.conf ssd-pool volume_backend_name ssd-pool
+openstack-config --set /etc/cinder/cinder.conf ssd-pool volume_driver cinder.volume.drivers.rbd.RBDDriver
+openstack-config --set /etc/cinder/cinder.conf ssd-pool rbd_secret_uuid $RBD_SECRET_UUID
 
 # Ceph keyrings
 chown cinder:cinder /etc/ceph/ceph.client.cinder.keyring
